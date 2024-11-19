@@ -2,6 +2,7 @@ Instantmesh original version：
 https://github.com/TencentARC/InstantMesh
 
 mesh preprocess (including watertight mesh transferring and volume/surface sampling)：
+
 Cpu version: mesh2sdf
 reference: https://github.com/wang-ps/mesh2sdf
 Low efficiency for high resolution 
