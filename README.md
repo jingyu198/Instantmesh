@@ -1,5 +1,5 @@
 Instantmesh original version：
-    https://github.com/jingyu198/Instantmesh.git
+    https://github.com/TencentARC/InstantMesh
 
 mesh preprocess (including watertight mesh transferring and volume/surface sampling)：
     Cpu version: mesh2sdf
