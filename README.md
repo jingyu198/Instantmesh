@@ -13,3 +13,5 @@ Refined-version repo:https://github.com/CvHadesSun/cumesh2sdf
 - Refine for thin mesh structure get sdf, hy-param:
   - band = 8/res
   - Sdf -=2/res
+Sample scripts:
+https://github.com/CvHadesSun/MeshSample
