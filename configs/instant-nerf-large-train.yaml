@@ -1,0 +1,72 @@
+model:
+  base_learning_rate: 4.0e-7 #4.0e-06
+  target: src.model_sdf.MVRecon
+  params:
+    lrm_path: /home/gjy/jingyu/InstantMesh/logs_1119/instant-nerf-large-train/checkpoints/step=00017232.ckpt
+    input_size: 320 
+    render_size: 192
+    train_check_interval: 800
+    
+    lrm_generator_config:
+      target: src.models.lrm_sdf.InstantNeRF
+      params: 
+        encoder_feat_dim: 768
+        encoder_freeze: false
+        encoder_model_name: facebook/dino-vitb16
+        transformer_dim: 1024
+        transformer_layers: 16
+        transformer_heads: 16
+        triplane_low_res: 32
+        triplane_high_res: 64 #128, 不用改
+        triplane_dim: 80 # 80
+        rendering_samples_per_ray: 128
+
+
+data:
+  target: src.data.objaverse.DataModuleFromConfig
+  params:
+    batch_size: 2
+    num_workers: 8
+    train:
+      target: src.data.objaverse.ObjaverseData
+      params:
+        root_dir: /mnt/cfs/
+        meta_fname: /home/gjy/jingyu/InstantMesh/json_files/obj_filtered_obj_name_cam32.json
+        input_image_dir: ""
+        target_image_dir: ""
+        input_view_num: 6
+        target_view_num: 4
+        total_view_n: 32
+        fov: 30
+        camera_rotation: False
+        validation: false
+        data_mode: gt
+        n_obj: -1  
+        input_image_size: 320 
+    validation:
+      target: src.data.objaverse.ValidationData
+      params:
+        root_dir: /mnt/cfs/
+        meta_fname: /home/gjy/jingyu/InstantMesh/json_files/obj_filtered_obj_name_val_cam32.json
+        input_view_num: 6
+        input_image_size: 320
+        fov: 30
+        total_view_n: 32
+
+
+lightning:
+  modelcheckpoint:
+    params:
+      every_n_train_steps: 2872                          # euqals 1 epoch for bs = 2
+      save_top_k: -1
+      save_last: true
+  callbacks: {}
+
+  trainer:
+    benchmark: true
+    max_epochs: -1
+    gradient_clip_val: 1.0
+    val_check_interval: 50  #2873
+    num_sanity_val_steps: 0
+    accumulate_grad_batches: 1
+    check_val_every_n_epoch: 1   # if not set this, validation does not run
